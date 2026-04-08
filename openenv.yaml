@@ -1,0 +1,22 @@
+name: InboxAgentEnv
+version: 1.0.0
+description: Professional Email Assistant Environment
+environment:
+  entrypoint: env.environment:InboxAgentEnv
+  action_space:
+    - list_emails
+    - read_email
+    - send_email
+    - archive_email
+    - flag_email
+    - search_contacts
+tasks:
+  - id: extract_code
+    difficulty: easy
+    description: "Extract a 6-digit security code from an email titled 'Your Login Code' and return it."
+  - id: inbox_triage
+    difficulty: medium
+    description: "Archive a newsletter, flag an urgent invoice, and reply 'Confirmed' to a meeting request."
+  - id: meeting_scheduler
+    difficulty: hard
+    description: "Find a contact's timezone in the contact list, and draft a reply to an email suggesting a meeting time that is exactly 9:00 AM in the recipient's timezone."
