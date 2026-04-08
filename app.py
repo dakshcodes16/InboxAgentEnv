@@ -10,13 +10,15 @@ app = FastAPI()
 current_env = None
 
 class ResetRequest(BaseModel):
-    task_id: str
+    task_id: Optional[str] = None
     task_name: Optional[str] = None # OpenEnv might use task_name or task_id
 
 @app.post("/reset")
-def reset_env(req: ResetRequest):
+def reset_env(req: Optional[ResetRequest] = None):
     global current_env
-    task_id = req.task_id or req.task_name
+    task_id = "extract_code"
+    if req:
+        task_id = req.task_id or req.task_name or "extract_code"
     
     if task_id == "extract_code":
         state = get_extract_code_state()
