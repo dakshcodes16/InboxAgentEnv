@@ -17,4 +17,4 @@ COPY --chown=user . $APP_HOME/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Start dummy server (to meet port 7860 requirement on space)
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "7860"]
