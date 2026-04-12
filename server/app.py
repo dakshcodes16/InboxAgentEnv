@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
 from env.environment import InboxAgentEnv
@@ -14,11 +14,11 @@ class ResetRequest(BaseModel):
     task_name: Optional[str] = None # OpenEnv might use task_name or task_id
 
 @app.post("/reset")
-def reset_env(req: Optional[ResetRequest] = None):
+def reset_env(req: Optional[Dict[str, Any]] = Body(default=None)):
     global current_env
     task_id = "extract_code"
     if req:
-        task_id = req.task_id or req.task_name or "extract_code"
+        task_id = req.get("task_id") or req.get("task_name") or "extract_code"
     
     if task_id == "extract_code":
         state = get_extract_code_state()
@@ -40,7 +40,7 @@ def step_env(action: Action):
     global current_env
     if not current_env:
         # Auto-initialize if stepping before reset
-        reset_env(ResetRequest(task_id="extract_code"))
+        reset_env({"task_id": "extract_code"})
         
     obs, reward = current_env.step(action)
     return {"observation": obs.dict(), "reward": reward.dict()}
